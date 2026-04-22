@@ -17,7 +17,7 @@ body{
     display: flex;
     flex-flow: column wrap;
     width: 40rem;
-    height: 40rem;
+    height: 50rem;
 }
 #display {
     flex: 1;
