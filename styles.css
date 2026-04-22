@@ -2,11 +2,28 @@
     box-sizing: border-box; 
     margin: 0;
     padding: 0;
+    
 }
 html { font-size: 62.5%; }
 body { font-size: 1.6rem; }
 /*boilerplate end*/
+body * { border: solid 1px; }
 
 body{
     background-color: lightcyan;
+}
+
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    width: 50rem;
+}
+#display {
+    width: 100%;
+}
+#numContainer {
+    flex: 3;
+}
+#opContainer {
+    flex: 1;
 }
