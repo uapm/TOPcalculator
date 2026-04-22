@@ -12,3 +12,20 @@ const divide = (a, b) => {
 let numberA;
 let operator;
 let numberB;
+
+const operate = (numberA, operator, numberB) => {
+	switch (operator) {
+	case "+":
+		add(numberA, numberB);
+		break;
+	case "-":
+		substract(numberA, numberB);
+		break;
+	case "*":
+		multiply(numberA, numberB);
+		break
+	case "/": 
+		divide(numberA, numberB);
+		break;
+	}
+}
