@@ -1,8 +1,14 @@
+const varTest = document.querySelector('div');
+const container = document.querySelector('.container');
+const display = document.querySelector('#display');
+const numContainer = document.querySelector('#numContainer');
+const opContainer = document.querySelector('#opContainer');
+
 let numberA;
 let operator;
 let numberB;
 
-const buttonContent = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', '⌫', '=', '+', '-', '*', '÷'] 
+const buttonContent = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', '=', '+', '-', '*', '÷'] 
 
 const undefinedOrZero = (a, b) => a == undefined || b == undefined ? true : false;
 
@@ -31,3 +37,16 @@ const operate = (numberA, operator, numberB) => {
 		break;
 	}
 }
+const numContainerButtons = () => {
+	for (let i=0; i<12; i++) {
+		let button = document.createElement('button');
+		button.textContent = buttonContent[i];
+		if (i<=9) button.id = `num${buttonContent[i]}`;
+		if (i==10) button.id = 'dot';
+		if (i==11) button.id = 'backspace';
+		numContainer.appendChild(button);
+
+	}
+}
+
+numContainerButtons();
