@@ -1,3 +1,9 @@
+let numberA;
+let operator;
+let numberB;
+
+const buttonContent = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', '⌫', '=', '+', '-', '*', '÷'] 
+
 const undefinedOrZero = (a, b) => a == undefined || b == undefined ? true : false;
 
 const add = (a, b) => undefinedOrZero(a, b) ? 'ERROR' : a + b;
@@ -8,10 +14,6 @@ const divide = (a, b) => {
 	if (b === 0) return 'IMPOSSIBRU';
 	return a / b;
 }
-
-let numberA;
-let operator;
-let numberB;
 
 const operate = (numberA, operator, numberB) => {
 	switch (operator) {
