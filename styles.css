@@ -7,7 +7,7 @@
 html { font-size: 62.5%; }
 body { font-size: 1.6rem; }
 /*boilerplate end*/
-body * { border: solid 1px; }
+.container * { border: solid 1px; }
 
 body{
     background-color: lightcyan;
@@ -15,15 +15,21 @@ body{
 
 .container {
     display: flex;
-    flex-flow: row wrap;
-    width: 50rem;
+    flex-flow: column wrap;
+    width: 40rem;
+    height: 40rem;
 }
 #display {
-    width: 100%;
+    flex: 1;
+    width: 75%;
+    max-width: 75%;
 }
 #numContainer {
     flex: 3;
+    width: 75%;
 }
 #opContainer {
-    flex: 1;
+    width: 25%;
+    min-height: 100%;
+    flex: 1 0 auto;
 }
