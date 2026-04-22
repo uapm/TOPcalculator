@@ -7,7 +7,10 @@
 html { font-size: 62.5%; }
 body { font-size: 1.6rem; }
 /*boilerplate end*/
-.container * { border: solid 1px; }
+.container * { 
+    display: flex;
+    border: solid 1px; 
+}
 
 body{
     background-color: lightcyan;
