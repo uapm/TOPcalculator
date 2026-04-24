@@ -8,8 +8,8 @@ let numberA;
 let operator;
 let numberB;
 
-const buttonContent = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', '=', '+', '-', '*', '÷'] 
-
+const buttonContent = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', '=', '+', '-', '*', '÷'] 
+const buttonId = ['num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'num0', 'dot', 'backspace', 'equals', 'add', 'substract', 'multiply', 'divide', ]
 const undefinedOrZero = (a, b) => a == undefined || b == undefined ? true : false;
 
 const add = (a, b) => undefinedOrZero(a, b) ? 'ERROR' : a + b;
@@ -41,12 +41,19 @@ const numContainerButtons = () => {
 	for (let i=0; i<12; i++) {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
-		if (i<=9) button.id = `num${buttonContent[i]}`;
-		if (i==10) button.id = 'dot';
-		if (i==11) button.id = 'backspace';
+		button.id = buttonId[i];
 		numContainer.appendChild(button);
+	}
+}
 
+const opContainerButtons = () => {
+	for (let i=12; i<17; i++) {
+		let button = document.createElement('button');
+		button.textContent = buttonContent[i];
+		button.id = buttonId[i];
+		opContainer.appendChild(button);
 	}
 }
 
 numContainerButtons();
+opContainerButtons();

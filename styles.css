@@ -9,7 +9,6 @@ body { font-size: 1.6rem; }
 /*boilerplate end*/
 .container * { 
     display: flex;
-    border: solid 1px; 
 }
 
 body{
@@ -30,15 +29,21 @@ body{
 #numContainer {
     flex: 3;
     width: 75%;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 #opContainer {
     width: 25%;
     min-height: 100%;
+    flex-flow: row wrap;
     flex: 1 0 auto;
 }
 
 button {
-    width: 10rem;
-    height: 10rem;
-    flex: 0;
+    min-width: 10rem;
+    min-height: 10rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 3rem;
 }
