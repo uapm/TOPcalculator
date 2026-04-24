@@ -3,12 +3,16 @@ const container = document.querySelector('.container');
 const display = document.querySelector('#display');
 const numContainer = document.querySelector('#numContainer');
 const opContainer = document.querySelector('#opContainer');
+const calcButton = document.querySelector('button');
 
 let numberA;
 let operator;
 let numberB;
 
-const buttonContent = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', '=', '+', '-', '*', '÷'] 
+let calculation = [];
+
+
+const buttonContent = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', ' = ', ' + ', ' - ', ' * ', ' ÷ '] 
 const buttonId = ['num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'num0', 'dot', 'backspace', 'equals', 'add', 'substract', 'multiply', 'divide', ]
 const undefinedOrZero = (a, b) => a == undefined || b == undefined ? true : false;
 
@@ -37,11 +41,32 @@ const operate = (numberA, operator, numberB) => {
 		break;
 	}
 }
+
+const storeValue = (id) => {
+	const button = document.querySelector(`#${id}`);
+	console.log(button);
+	const value = button.dataValue;
+	let disText = display.textContent;
+	let rmLastChar = disText.slice(0,(disText.length-1));
+	let rmLast3Char = disText.slice(0,(disText.length-3));
+	let updated;
+	if (id !== 'backspace') disText += button.textContent;
+	if (id == 'backspace') {
+		(disText.charAt(disText.length-1) == ' ') ?
+		updated = rmLast3Char :
+		updated = rmLastChar;
+		disText = updated;
+	}
+	display.textContent = disText;
+}
+
 const numContainerButtons = () => {
 	for (let i=0; i<12; i++) {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
 		button.id = buttonId[i];
+		button.setAttribute('data-value', `${buttonContent[i]}`);
+		button.addEventListener('click', () => storeValue(button.id));
 		numContainer.appendChild(button);
 	}
 }
@@ -51,9 +76,16 @@ const opContainerButtons = () => {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
 		button.id = buttonId[i];
+		button.setAttribute('data-value', `${buttonContent[i]}`);
+		button.addEventListener('click', () => storeValue(button.id));
 		opContainer.appendChild(button);
 	}
 }
 
 numContainerButtons();
 opContainerButtons();
+
+
+
+
+
