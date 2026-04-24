@@ -25,6 +25,11 @@ body{
     flex: 1;
     width: 75%;
     max-width: 75%;
+    border: 5px solid;
+    justify-content: flex-end;
+    padding-right: 3rem;
+    align-items: center;
+    font-size: 3rem;
 }
 #numContainer {
     flex: 3;
