@@ -42,12 +42,42 @@ const operate = (numberA, operator, numberB) => {
 	}
 }
 
+const storeValue = (id) => {
+	const button = document.querySelector(`#${id}`);
+	let disText = display.textContent;
+	const lastChar = disText.charAt(disText.length-1)
+	let rmLastChar = disText.slice(0,(disText.length-1));
+	let rmLast3Char = disText.slice(0,(disText.length-3));
+	let updated = button.textContent;
+	let disTextArray = disText.split(' ');
+	let textPos = disTextArray.length - 1
+	let inspectArr = disTextArray[textPos].split('');
+
+	if (disTextArray.length >= 3 && disTextArray[2] !== '' && button.classList == 'operator') return;
+	if (button.classList == 'number') disText += updated;
+	if (button.classList == 'operator' && lastChar == ' ') {
+		updated = rmLast3Char + button.textContent;
+		disText = updated;
+	}
+	if (button.classList == 'operator' && lastChar !== ' ') {
+		disText += button.textContent;
+	}
+	if (id == 'backspace') {
+		(lastChar == ' ') ?
+		updated = rmLast3Char :
+		updated = rmLastChar;
+		disText = updated;
+	}
+	if (id == 'dot' && inspectArr.includes('.')) return;
+	display.textContent = disText;
+}
+
+
 const numContainerButtons = () => {
 	for (let i=0; i<12; i++) {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
 		button.id = buttonId[i];
-		button.setAttribute('data-value', `${buttonContent[i]}`);
 		if (i<11) button.classList.add('number');
 		button.addEventListener('click', () => storeValue(button.id));
 		numContainer.appendChild(button);
@@ -69,32 +99,6 @@ const opContainerButtons = () => {
 numContainerButtons();
 opContainerButtons();
 
-const storeValue = (id) => {
-	const button = document.querySelector(`#${id}`);
-	console.log(button);
-	const value = button.dataValue;
-	let disText = display.textContent;
-	let rmLastChar = disText.slice(0,(disText.length-1));
-	let rmLast3Char = disText.slice(0,(disText.length-3));
-	let updated = button.textContent;
-	let disTextArray = disText.split(' ');
-	if (disTextArray.length >= 3 && disTextArray[disTextArray.length-1] !== '') return;
-	if (button.classList == 'number') disText += updated;
-	if (button.classList == 'operator' && disText.charAt(disText.length-1) == ' ') {
-		updated = rmLast3Char + button.textContent;
-		disText = updated;
-	}
-	if (button.classList == 'operator' && disText.charAt(disText.length-1) !== ' ') {
-		disText += button.textContent;
-	}
-	if (id == 'backspace') {
-		(disText.charAt(disText.length-1) == ' ') ?
-		updated = rmLast3Char :
-		updated = rmLastChar;
-		disText = updated;
-	}
-	display.textContent = disText;
-}
 
 
 
