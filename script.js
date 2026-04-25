@@ -4,6 +4,7 @@ const display = document.querySelector('#display');
 const numContainer = document.querySelector('#numContainer');
 const opContainer = document.querySelector('#opContainer');
 const calcButton = document.querySelector('button');
+const body = document.querySelector('body');
 
 let numberA;
 let operator;
@@ -26,20 +27,22 @@ const divide = (a, b) => {
 }
 
 const operate = (numberA, operator, numberB) => {
+	let result;
 	switch (operator) {
 	case "+":
-		add(numberA, numberB);
+		result = add(numberA, numberB);
 		break;
 	case "-":
-		substract(numberA, numberB);
+		result = substract(numberA, numberB);
 		break;
 	case "*":
-		multiply(numberA, numberB);
+		result = multiply(numberA, numberB);
 		break
-	case "/": 
-		divide(numberA, numberB);
+	case "÷": 
+		result = divide(numberA, numberB);
 		break;
 	}
+	return Math.round(result * 10000000000000) / 10000000000000;
 }
 
 const storeValue = (id) => {
@@ -52,9 +55,32 @@ const storeValue = (id) => {
 	let disTextArray = disText.split(' ');
 	let textPos = disTextArray.length - 1
 	let inspectArr = disTextArray[textPos].split('');
+	let checkFull = () => {
+		if (disTextArray.length >= 3 && disTextArray[2] !== '' && button.classList == 'operator') {
+			return true;
+		}
+	};
+	let checkComplete = () => {
+		if (disTextArray.length >= 3 && disTextArray[2] !== '') {
+			return true;
+		}
+	}
+	if (display.classList.value === 'finished' && button.classList == 'number' && button.id !== 'dot' || disText == 'IMPOSSIBRU') {
+		display.textContent = button.textContent;
+		display.classList.remove('finished');
 
-	if (disTextArray.length >= 3 && disTextArray[2] !== '' && button.classList == 'operator') return;
-	if (button.classList == 'number') disText += updated;
+		return;
+	} else if (button.classList == 'number') {
+		disText += updated;
+		display.classList.remove('finished');
+
+	} else {
+		display.classList.remove('finished');
+	}
+
+
+	if (checkFull() == true || (inspectArr.length > 12 && button.classList == 'number')) return;
+	
 	if (button.classList == 'operator' && lastChar == ' ') {
 		updated = rmLast3Char + button.textContent;
 		disText = updated;
@@ -69,7 +95,16 @@ const storeValue = (id) => {
 		disText = updated;
 	}
 	if (id == 'dot' && inspectArr.includes('.')) return;
+
 	display.textContent = disText;
+
+	if (id == 'equals' && checkComplete()) {
+		let result = operate(+disTextArray[0], disTextArray[1], +disTextArray[2]);
+		display.classList.add('finished');
+		display.textContent = result;
+	}
+
+
 }
 
 
@@ -99,6 +134,5 @@ const opContainerButtons = () => {
 numContainerButtons();
 opContainerButtons();
 
-
-
+body.setAttribute('style', 'display: flex; justify-content: space-around; align-items: center;')
 
