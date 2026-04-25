@@ -48,11 +48,23 @@ body{
     flex: 1 0 auto;
 }
 
-button {
+#backspaceClear {
+
+    flex-flow: column;
+}
+button, #backspaceClear {
     min-width: 10rem;
     min-height: 10rem;
     display: flex;
+}
+
+button {
     justify-content: space-around;
     align-items: center;
     font-size: 3rem;
+}
+
+#backspace, #clear {
+    min-height: 5rem;
+    max-height: 5rem;
 }

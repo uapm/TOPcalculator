@@ -13,8 +13,8 @@ let numberB;
 let calculation = [];
 
 
-const buttonContent = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', ' = ', ' + ', ' - ', ' * ', ' ÷ '] 
-const buttonId = ['num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'num0', 'dot', 'backspace', 'equals', 'add', 'substract', 'multiply', 'divide', ]
+const buttonContent = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '⌫', 'clear', ' = ', ' + ', ' - ', ' * ', ' ÷ '] 
+const buttonId = ['num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'num0', 'dot', 'backspace', 'clear', 'equals', 'add', 'substract', 'multiply', 'divide', ]
 const undefinedOrZero = (a, b) => a == undefined || b == undefined ? true : false;
 
 const add = (a, b) => undefinedOrZero(a, b) ? 'ERROR' : a + b;
@@ -28,27 +28,36 @@ const divide = (a, b) => {
 
 const operate = (numberA, operator, numberB) => {
 	let result;
+	let round = () => Math.round(result * 10000000000000) / 10000000000000;
 	switch (operator) {
 	case "+":
 		result = add(numberA, numberB);
+		return round();
 		break;
 	case "-":
 		result = substract(numberA, numberB);
+		return round();
 		break;
 	case "*":
 		result = multiply(numberA, numberB);
+		return round();
 		break
 	case "÷": 
-		result = divide(numberA, numberB);
+		if (divide(numberA, numberB) === 'IMPOSSIBRU') {
+			return result = divide(numberA, numberB)
+		} else {
+			result = divide(numberA, numberB);
+			return round();
+		};
 		break;
 	}
-	return Math.round(result * 10000000000000) / 10000000000000;
 }
 
 const storeValue = (id) => {
 	const button = document.querySelector(`#${id}`);
 	let disText = display.textContent;
-	const lastChar = disText.charAt(disText.length-1)
+	const lastChar = disText.charAt(disText.length-1);
+	const firstChar = display.textContent.charAt(0);
 	let rmLastChar = disText.slice(0,(disText.length-1));
 	let rmLast3Char = disText.slice(0,(disText.length-3));
 	let updated = button.textContent;
@@ -56,37 +65,66 @@ const storeValue = (id) => {
 	let textPos = disTextArray.length - 1
 	let inspectArr = disTextArray[textPos].split('');
 	let checkFull = () => {
-		if (disTextArray.length >= 3 && disTextArray[2] !== '' && button.classList == 'operator') {
+		if (disTextArray.length >= 3 && disTextArray[2] !== '' && disTextArray[2] !== '-' && button.classList == 'operator') {
 			return true;
+		} else {
+			return false;
 		}
 	};
+	if (id === 'clear') {
+		disText = '';
+		display.classList.remove('finished');
+
+	}
+	if (disTextArray.length >= 3 && button.classList == 'operator' && lastChar == '-') return;
 	let checkComplete = () => {
-		if (disTextArray.length >= 3 && disTextArray[2] !== '') {
+		if (disTextArray.length >= 3 && disTextArray[2] !== '' && lastChar !== '-') {
 			return true;
 		}
 	}
-	if (display.classList.value === 'finished' && button.classList == 'number' && button.id !== 'dot' || disText == 'IMPOSSIBRU') {
+	if (display.classList.value === 'finished' && button.classList == 'number' && button.id !== 'dot') {
 		display.textContent = button.textContent;
 		display.classList.remove('finished');
-
 		return;
 	} else if (button.classList == 'number') {
 		disText += updated;
 		display.classList.remove('finished');
 
-	} else {
-		display.classList.remove('finished');
-	}
+	} 
 
 
-	if (checkFull() == true || (inspectArr.length > 12 && button.classList == 'number')) return;
+	if (inspectArr.length > 12 && button.classList == 'number') return;
+	if (checkFull()) {
+		let result = operate(+disTextArray[0], disTextArray[1], +disTextArray[2]);
+		(result == 'IMPOSSIBRU') ? 
+		display.classList.add('finished') :
+		result += updated;
+		disText = result;
+	} 
 	
-	if (button.classList == 'operator' && lastChar == ' ') {
-		updated = rmLast3Char + button.textContent;
+	if (button.classList == 'operator' && (lastChar === ' ' || lastChar == '-') && disTextArray.length > 0)  {
+		// if (disTextArray[2] !== '-') updated = disText + '-';
+		if (id == 'substract'){
+			updated = disText + '-';
+
+		} else {
+			updated = rmLast3Char + button.textContent;
+		}
+
 		disText = updated;
 	}
-	if (button.classList == 'operator' && lastChar !== ' ') {
-		disText += button.textContent;
+	if (button.classList == 'operator' && lastChar !== ' ' && !checkFull()) {
+		if ((firstChar === '' || firstChar == 'I') && id == 'substract'){
+		disText = '-';	
+		display.classList.remove('finished');
+		} else if (firstChar === '' || firstChar == 'I' || (firstChar == '-' && inspectArr.length == 1)) {
+			return
+		} else {
+			display.classList.remove('finished');
+			disText += button.textContent;
+		}
+
+		
 	}
 	if (id == 'backspace') {
 		(lastChar == ' ') ?
@@ -103,29 +141,42 @@ const storeValue = (id) => {
 		display.classList.add('finished');
 		display.textContent = result;
 	}
+	if (id == 'equals') console.log(checkComplete())
 
 
 }
 
 
 const numContainerButtons = () => {
-	for (let i=0; i<12; i++) {
+	for (let i=0; i<11; i++) {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
 		button.id = buttonId[i];
-		if (i<11) button.classList.add('number');
+		button.classList.add('number');
 		button.addEventListener('click', () => storeValue(button.id));
 		numContainer.appendChild(button);
 	}
 }
 
-const opContainerButtons = () => {
-	for (let i=12; i<17; i++) {
+const backSpaceAndClear = () => {
+	let buttonDiv = document.createElement('div');
+	buttonDiv.id = 'backspaceClear';
+	numContainer.appendChild(buttonDiv);
+	for (let i=11; i<13; i++) {
 		let button = document.createElement('button');
 		button.textContent = buttonContent[i];
 		button.id = buttonId[i];
-		button.setAttribute('data-value', `${buttonContent[i]}`);
-		if (i>12) button.classList.add('operator');
+		button.addEventListener('click', () => storeValue(button.id));
+		buttonDiv.appendChild(button);
+	}
+}
+
+const opContainerButtons = () => {
+	for (let i=13; i<18; i++) {
+		let button = document.createElement('button');
+		button.textContent = buttonContent[i];
+		button.id = buttonId[i];
+		if (i>13) button.classList.add('operator');
 		button.addEventListener('click', () => storeValue(button.id));
 		opContainer.appendChild(button);
 	}
@@ -133,6 +184,7 @@ const opContainerButtons = () => {
 
 numContainerButtons();
 opContainerButtons();
+backSpaceAndClear();
 
 body.setAttribute('style', 'display: flex; justify-content: space-around; align-items: center;')
 
